@@ -1,15 +1,90 @@
 import UIKit
+import SnapKit
 
 class ViewController: UIViewController {
 //    MARK: - UI
+    
+    private lazy var passwordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Random number"
+        label.textColor = .black
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private lazy var passwordTextField: UITextField = {
+        let textField = UITextField()
+        textField.isSecureTextEntry = true
+        textField.placeholder = "Number"
+        textField.textAlignment = .center
+        textField.layer.cornerRadius = 20
+        textField.backgroundColor = .white
+        textField.textColor = .black
+        textField.borderStyle = .roundedRect
+        return textField
+    }()
+    
+    private lazy var generatorButton: UIButton = {
+        let button = UIButton()
+        button.configuration = .filled()
+        button.configuration?.title = "Generate"
+        button.configuration?.titleAlignment = .center
+        return button
+    }()
+    
+    private lazy var activityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView = UIActivityIndicatorView()
+        activityIndicatorView.isHidden = false
+        return activityIndicatorView
+    }()
 
 //    MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupViews()
+        setupConstraints()
     }
     
 //    MARK: - Setups
+    
+    private func setupViews() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(passwordLabel)
+        view.addSubview(passwordTextField)
+        view.addSubview(generatorButton)
+        view.addSubview(activityIndicatorView)
+    }
+    
+    private func setupConstraints() {
+        passwordLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(200)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(50)
+        }
+        
+        passwordTextField.snp.makeConstraints { make in
+            make.top.equalTo(passwordLabel.snp.bottom).offset(50)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+        }
+        
+        generatorButton.snp.makeConstraints { make in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(50)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+        }
+        
+        activityIndicatorView.snp.makeConstraints { make in
+            make.top.equalTo(generatorButton.snp.bottom).offset(50)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+        }
+    }
     
 //    MARK: - Actions
     func bruteForce(passwordToUnlock: String) {
