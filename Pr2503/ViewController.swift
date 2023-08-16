@@ -1,49 +1,27 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var button: UIButton!
-    
-    var isBlack: Bool = false {
-        didSet {
-            if isBlack {
-                self.view.backgroundColor = .black
-            } else {
-                self.view.backgroundColor = .white
-            }
-        }
-    }
-    
-    @IBAction func onBut(_ sender: Any) {
-        isBlack.toggle()
-    }
-    
+//    MARK: - UI
+
+//    MARK: - LifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        self.bruteForce(passwordToUnlock: "1!gr")
-        
-        // Do any additional setup after loading the view.
     }
     
+//    MARK: - Setups
+    
+//    MARK: - Actions
     func bruteForce(passwordToUnlock: String) {
         let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
 
         var password: String = ""
 
-        // Will strangely ends at 0000 instead of ~~~
-        while password != passwordToUnlock { // Increase MAXIMUM_PASSWORD_SIZE value for more
+        while password != passwordToUnlock {
             password = generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
-//             Your stuff here
-            print(password)
-            // Your stuff here
         }
-        
-        print(password)
     }
 }
-
-
 
 extension String {
     var digits:      String { return "0123456789" }
@@ -52,8 +30,6 @@ extension String {
     var punctuation: String { return "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" }
     var letters:     String { return lowercase + uppercase }
     var printable:   String { return digits + letters + punctuation }
-
-
 
     mutating func replace(at index: Int, with character: Character) {
         var stringArray = Array(self)
@@ -88,4 +64,3 @@ func generateBruteForce(_ string: String, fromArray array: [String]) -> String {
 
     return str
 }
-
