@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         button.configuration = .filled()
         button.configuration?.title = "Generate"
         button.configuration?.titleAlignment = .center
+        button.addTarget(self, action: #selector(generatorButtonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -87,6 +88,7 @@ class ViewController: UIViewController {
     }
     
 //    MARK: - Actions
+    
     func bruteForce(passwordToUnlock: String) {
         let ALLOWED_CHARACTERS:   [String] = String().printable.map { String($0) }
 
@@ -94,6 +96,23 @@ class ViewController: UIViewController {
 
         while password != passwordToUnlock {
             password = generateBruteForce(password, fromArray: ALLOWED_CHARACTERS)
+            DispatchQueue.main.sync { [weak self] in
+                self?.passwordLabel.text = password
+            }
+        }
+        
+        DispatchQueue.main.sync {
+            self.passwordTextField.isSecureTextEntry = false
+            self.activityIndicatorView.stopAnimating()
+            self.activityIndicatorView.isHidden = true
+        }
+    }
+    
+    @objc func generatorButtonPressed() {
+        activityIndicatorView.startAnimating()
+        guard let inputText = passwordTextField.text else { return }
+        DispatchQueue.global().async { [weak self] in
+            self?.bruteForce(passwordToUnlock: inputText)
         }
     }
 }
